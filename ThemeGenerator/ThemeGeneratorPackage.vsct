@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<Extern href="stdidcmd.h"/>
+
+	<Extern href="vsshlids.h"/>
+
+	<Commands package="guidThemeGeneratorPackage">
+		<Menus>
+			<Menu guid="guidThemeGeneratorPackageCmdSet" id="ThemeGeneratorMenu" priority="0x700" type="Menu">
+				<Parent guid="guidSHLMainMenu"
+                id="IDG_VS_MM_TOOLSADDINS" />
+				<Strings>
+					<ButtonText>Theme Builder</ButtonText>
+					<CommandName>ThemeBuilder</CommandName>
+				</Strings>
+			</Menu>
+		</Menus>
+
+		<Groups>
+			<Group guid="guidThemeGeneratorPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+				<Parent guid="guidThemeGeneratorPackageCmdSet" id="ThemeGeneratorMenu"/>
+			</Group>
+		</Groups>
+
+		<Buttons>
+			<Button guid="guidThemeGeneratorPackageCmdSet" id="ImportSettingsId" priority="0x0100" type="Button">
+				<Parent guid="guidThemeGeneratorPackageCmdSet" id="MyMenuGroup" />
+				<Icon guid="guidImages" id="bmpPic1" />
+				<Strings>
+					<ButtonText>Select Studio Style Settings</ButtonText>
+				</Strings>
+			</Button>
+		</Buttons>
+
+		<Bitmaps>
+			<Bitmap guid="guidImages" href="Resources\ImportSettings.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
+		</Bitmaps>
+	</Commands>
+
+	<Symbols>
+		<GuidSymbol name="guidThemeGeneratorPackage" value="{6acb733a-89d0-4556-b1af-4cba4d649daa}" />
+
+		<GuidSymbol name="guidThemeGeneratorPackageCmdSet" value="{ff67bee8-6e4f-43bc-a10c-70cc3e442f81}">
+			<IDSymbol name="MyMenuGroup" value="0x1020" />
+			<IDSymbol name="ThemeGeneratorMenu" value="0x1021"/>
+			<IDSymbol name="ImportSettingsId" value="0x0100" />
+		</GuidSymbol>
+
+		<GuidSymbol name="guidImages" value="{e1757ec0-0f66-4d13-b781-d82c5bcc1c8c}" >
+			<IDSymbol name="bmpPic1" value="1" />
+			<IDSymbol name="bmpPic2" value="2" />
+			<IDSymbol name="bmpPicSearch" value="3" />
+			<IDSymbol name="bmpPicX" value="4" />
+			<IDSymbol name="bmpPicArrows" value="5" />
+			<IDSymbol name="bmpPicStrikethrough" value="6" />
+		</GuidSymbol>
+	</Symbols>
+</CommandTable>
