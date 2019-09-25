@@ -52,12 +52,13 @@ namespace ThemeGenerator
 		{
 			ThreadHelper.ThrowIfNotOnUIThread();
 			var filePath = PickSettingsFile();
+			var directoryToSave = (this.package as ThemeGeneratorPackage).ThemeOutputDirectory;
 			if (!string.IsNullOrEmpty(filePath))
 			{
 				CollecteThemeInfo();
-				var generator = new ThemeGenerator.Generator.Generator(filePath);
-				generator.GenerateTheme();
-				MessageBox.Show("THeme Created");
+				var generator = new ThemeGenerator.Generator.Generator(filePath,directoryToSave);
+				generator.GenerateTheme();				
+				MessageBox.Show("Theme Created");
 			}
 		}
 

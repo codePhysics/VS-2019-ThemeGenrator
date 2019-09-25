@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -13,10 +14,11 @@ namespace ThemeGenerator.Generator
 		private string vsSettingsFile { get; }
 		private string themeName { get; }
 		private string _baseTheme;
+		private string DirectoryToSave { get; }
 		List<string> baseColorList;
 		List<string> secondaryColorList;
 		List<string> thirdColorList;
-		string BaseThemePath;
+		string BaseThemeName;
 
 		public string BaseTheme
 		{
@@ -27,24 +29,28 @@ namespace ThemeGenerator.Generator
 					this.baseColorList = new List<string> { "FFF5F5F5", "FFEEEEF2", "FFFFFFFF", };
 					this.secondaryColorList = new List<string> { "FF717171", "FFDEDFE7", "FF3399FF", "FFF6F6F6", "FFCCCEDB" };
 					this.thirdColorList = new List<string> { "FF3399FF", "FFC2C3C9" };
-					this.BaseThemePath = @"C:\codePhysics\VS2017 Themes\BaseLight.vstheme";
+					//this.BaseThemePath = @"C:\codePhysics\VS2017 Themes\BaseLight.vstheme";
+					this.BaseThemeName = "BaseLight.vstheme";
 				}
 				else
 				{
 					this.baseColorList = new List<string> { "FF3E3E42", "FF2D2D30", "FF282828", "FF252526", "FF333337", "FFE2E2E2" };
 					this.secondaryColorList = new List<string> { "FF393F4B", "FF555555", "FF686868", "FF007ACC", "FF1B1B1C", "FF3F3F46" };
 					this.thirdColorList = new List<string> { "FF3399FF", "FF686868" };
-					this.BaseThemePath = @"C:\codePhysics\VS2017 Themes\BaseDark.vstheme";
+					this.BaseThemeName = "BaseDark.vstheme";
+
+					//this.BaseTheme = @"C:\codePhysics\VS2017 Themes\BaseDark.vstheme";
 				}
 				_baseTheme = value;
 			}
 		}
 
-		public Generator(string filePath)
+		public Generator(string filePath, string directoryToSave)
 		{
 			this.vsSettingsFile = filePath;
 			this.themeName = ThemeInfo.ThemeName;
 			this.BaseTheme = ThemeInfo.BaseTheme;
+			this.DirectoryToSave = directoryToSave;
 		}
 		public void GenerateTheme()
 		{
@@ -113,10 +119,12 @@ namespace ThemeGenerator.Generator
 		{
 			System.Xml.Serialization.XmlSerializer writer =
 				new System.Xml.Serialization.XmlSerializer(typeof(Themes));
-
-			var path = $@"C:\codePhysics\VS2017 Themes\{themeName}.vstheme";
+			var path = $@"{DirectoryToSave}\{themeName}.vstheme";
+			if (!Directory.Exists(DirectoryToSave))
+			{
+				Directory.CreateDirectory(DirectoryToSave);
+			}
 			System.IO.FileStream file = System.IO.File.Create(path);
-
 			writer.Serialize(file, Theme);
 			file.Close();
 		}
@@ -278,11 +286,12 @@ namespace ThemeGenerator.Generator
 			{
 				if (_theme == null)
 				{
+
 					XmlSerializer serializer = new XmlSerializer(typeof(Themes));
-					using (FileStream fileStream = new FileStream(BaseThemePath, FileMode.Open))
+					using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"ThemeGenerator.Resources.{BaseThemeName}"))
 					{
-						_theme = (Themes)serializer.Deserialize(fileStream);
-					}
+						_theme = (Themes)serializer.Deserialize(stream);
+					}					
 				}
 				return _theme;
 			}
